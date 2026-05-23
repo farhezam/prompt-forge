@@ -120,7 +120,7 @@ Professional dark interface with:
                              ▼
 ┌─────────────────────────────────────────────────────────────┐
 │                        LLM API                              │
-│  - OpenAI-compatible inference endpoint                     │
+│  - Xiaomi MiMo inference endpoint                            │
 │  - Returns generated text + token usage                     │
 │  - Supports multiple model variants                         │
 └─────────────────────────────────────────────────────────────┘
@@ -143,7 +143,7 @@ Professional dark interface with:
 | **React** | UI components and state management | 19.x |
 | **TypeScript** | End-to-end type safety | 5.x |
 | **Tailwind CSS** | Utility-first styling with dark theme | 4.x |
-| **LLM API** | OpenAI-compatible backend for prompt execution | v1 |
+| **LLM API** | Xiaomi MiMo backend for prompt execution | v1 |
 | **Vercel** | Deployment and hosting | — |
 
 ---
@@ -154,7 +154,7 @@ Professional dark interface with:
 
 - **Node.js** 18.17 or later
 - **npm** 9 or later
-- **LLM API key** (optional — app works without it for template browsing)
+- **Xiaomi MiMo API key**
 
 ### Installation
 
@@ -295,7 +295,7 @@ Clear all data via Settings Modal → Reset.
 - [ ] Prompt versioning with diff comparison
 - [ ] Export prompts as JSON, Markdown, or raw text
 - [ ] Keyboard shortcuts for editor actions
-- [ ] Multi-model support (OpenAI, Anthropic, etc.)
+- [ ] Multi-model support (additional Xiaomi MiMo models)
 - [ ] Collaborative prompt editing
 - [ ] Prompt performance scoring
 - [ ] Custom template creation UI

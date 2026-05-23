@@ -1,73 +1,338 @@
-# Prompt Forge — Visual Prompt Engineering IDE
+# 🛠️ Prompt Forge — AI Prompt Engineering IDE
 
-## Overview
+<div align="center">
 
-Prompt Forge is a visual prompt engineering IDE built for developers and researchers who design, test, and iterate on LLM prompts. It provides a structured workspace with live testing against the MiMo API, version tracking, and token-level analytics — all in a single interface.
+![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?style=flat-square&logo=typescript)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.x-38bdf8?style=flat-square&logo=tailwindcss)
+![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
 
-## Features
+**A production-grade prompt engineering workspace for developers and AI creators.**
 
-- **Live Prompt Testing** — Execute prompts against MiMo models and inspect responses in real time
-- **Version History** — Track every revision with diffs and rollback support
-- **Template Library** — Save, organize, and share reusable prompt templates
-- **Token Analytics** — Monitor token usage, cost estimates, and response latency
-- **Smart Suggestions** — AI-powered recommendations to improve prompt clarity and effectiveness
-- **Export Prompts** — Export prompts as JSON, Markdown, or raw text for integration into pipelines
+Craft, test, and optimize LLM prompts through a VS Code-inspired interface with live execution, template library, and analytics dashboard.
 
-## Tech Stack
+[Live Demo](https://prompt-forge-five-mu.vercel.app) · [Report Bug](https://github.com/farhezam/prompt-forge/issues) · [Request Feature](https://github.com/farhezam/prompt-forge/issues)
 
-- **Next.js 16** — App Router, Server Components, Server Actions
-- **TypeScript** — End-to-end type safety
-- **Tailwind CSS** — Utility-first styling with dark theme
-- **MiMo API** — LLM backend for prompt execution and suggestions
+</div>
 
-## Getting Started
+---
+
+## 📋 Table of Contents
+
+- [Overview](#overview)
+- [Features](#features)
+- [Architecture](#architecture)
+- [Tech Stack](#tech-stack)
+- [Getting Started](#getting-started)
+- [API Reference](#api-reference)
+- [Project Structure](#project-structure)
+- [Configuration](#configuration)
+- [Screenshots](#screenshots)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
+- [License](#license)
+
+---
+
+## 🎯 Overview
+
+Prompt Forge solves a critical problem in AI-assisted development: **prompt iteration is unstructured, undocumented, and inefficient**. Developers waste hours crafting prompts without visibility into token usage, performance patterns, or reusable templates.
+
+Prompt Forge provides:
+
+- **Structured workspace** — Split-view editor for writing and testing prompts with real-time AI responses
+- **Template library** — 8 professional prompt categories pre-built for immediate use
+- **Token analytics** — Track consumption, cost, and performance across all executions
+- **Secure architecture** — API keys never leave the server; client-side storage for user data
+
+Built for developers who take prompt engineering seriously.
+
+---
+
+## ✨ Features
+
+### 🖊️ Interactive Editor
+Split-panel layout with syntax-aware prompt builder on the left and real-time response panel on the right. Auto-save functionality preserves drafts across sessions. After execution, token usage metrics (input tokens, output tokens, total) are displayed alongside the AI response.
+
+### 📚 Template Library
+8 professionally crafted prompt categories:
+- **Code Generation** — Generate boilerplate, functions, and modules
+- **Code Review** — Analyze code quality and suggest improvements
+- **Creative Writing** — Stories, narratives, and creative content
+- **Business Writing** — Emails, proposals, and professional documents
+- **Data Analysis** — Query generation and data interpretation
+- **Technical Documentation** — API docs, READMEs, and guides
+- **Brainstorming** — Idea generation and concept exploration
+- **Translation** — Multi-language translation and localization
+
+### 📊 Analytics Dashboard
+Comprehensive tracking with:
+- Total tokens consumed across all sessions
+- Prompt execution count and history
+- Average tokens per prompt
+- Estimated cost breakdown
+- Visual charts for daily token usage trends
+- Execution history table with timestamps and status
+
+### 🔐 Secure API Integration
+- API key stored in browser localStorage — never transmitted to third parties
+- MiMo API calls routed through Next.js server-side API routes
+- Server-side proxy pattern ensures zero key exposure to client
+- Request/response logging for debugging
+
+### 🎨 VS Code-Inspired Dark Theme
+Professional dark interface with:
+- Slate/zinc + indigo accent color palette
+- Glassmorphism panels with backdrop blur
+- Smooth transitions and loading states
+- Responsive layout for desktop, tablet, and mobile
+
+---
+
+## 🏗️ Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                      Browser (Client)                        │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────────┐  │
+│  │   Editor UI   │  │  Templates   │  │    Analytics     │  │
+│  │  (React)      │  │  (React)     │  │    (React)       │  │
+│  └──────┬───────┘  └──────┬───────┘  └────────┬─────────┘  │
+│         │                  │                    │            │
+│         └──────────────────┼────────────────────┘            │
+│                            │                                 │
+│                    localStorage API key                      │
+└────────────────────────────┼─────────────────────────────────┘
+                             │ POST /api/run-prompt
+                             ▼
+┌─────────────────────────────────────────────────────────────┐
+│                   Next.js Server (API Route)                 │
+│  ┌──────────────────────────────────────────────────────┐   │
+│  │  /api/run-prompt                                      │   │
+│  │  - Extracts prompt from request body                   │   │
+│  │  - Adds API key from request body                      │   │
+│  │  - Forwards to MiMo API                                │   │
+│  │  - Extracts token usage from response                  │   │
+│  │  - Returns result + metrics to client                  │   │
+│  └──────────────────────────────────────────────────────┘   │
+└────────────────────────────┼─────────────────────────────────┘
+                             │ HTTPS
+                             ▼
+┌─────────────────────────────────────────────────────────────┐
+│                        MiMo API                             │
+│  - LLM inference endpoint                                   │
+│  - Returns generated text + token usage                     │
+│  - Supports multiple model variants                         │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**Data Flow:**
+1. User writes prompt in editor → saves to localStorage (auto-save)
+2. User clicks Execute → POST to `/api/run-prompt` with prompt + API key
+3. API route adds key, forwards to MiMo → receives response + token metrics
+4. Client displays response + updates analytics in localStorage
+5. Analytics page reads localStorage → renders charts and history
+
+---
+
+## 🛠️ Tech Stack
+
+| Technology | Purpose | Version |
+|------------|---------|---------|
+| **Next.js** | Full-stack framework (App Router, SSR, API Routes) | 16.x |
+| **React** | UI components and state management | 19.x |
+| **TypeScript** | End-to-end type safety | 5.x |
+| **Tailwind CSS** | Utility-first styling with dark theme | 4.x |
+| **MiMo API** | LLM backend for prompt execution | v1 |
+| **Vercel** | Deployment and hosting | — |
+
+---
+
+## 🚀 Getting Started
 
 ### Prerequisites
 
-- Node.js 18.17+
-- npm 9+
+- **Node.js** 18.17 or later
+- **npm** 9 or later
+- **MiMo API key** (optional — app works without it for template browsing)
 
 ### Installation
 
 ```bash
-git clone https://github.com/your-org/prompt-forge.git
+# Clone repository
+git clone https://github.com/farhezam/prompt-forge.git
 cd prompt-forge
+
+# Install dependencies
 npm install
-```
 
-### Environment Setup
-
-```bash
+# Setup environment
 cp .env.local.example .env.local
-```
 
-Edit `.env.local` and add your MiMo API key:
+# Edit .env.local with your MiMo API key
+# MIMO_API_KEY=your_api_key_here
 
-```
-MIMO_API_KEY=your_actual_api_key
-```
-
-### Run Development Server
-
-```bash
+# Start development server
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## MiMo API Setup
+### Build for Production
 
-1. Sign up at the MiMo developer portal
-2. Generate an API key
-3. Add the key to `.env.local` as `MIMO_API_KEY`
-4. Restart the dev server
+```bash
+npm run build
+npm start
+```
 
-The key is server-side only — never exposed to the client.
+### Deploy to Vercel
 
-## Screenshots
+```bash
+# Install Vercel CLI
+npm i -g vercel
 
-> Coming soon. Screenshots and demo video will be added after the initial release.
+# Deploy
+vercel --prod
+```
 
-## License
+Set environment variable `MIMO_API_KEY` in Vercel dashboard under **Settings → Environment Variables**.
 
-MIT
+---
+
+## 📡 API Reference
+
+### `POST /api/run-prompt`
+
+Execute a prompt against MiMo API.
+
+**Request Body:**
+```json
+{
+  "systemPrompt": "You are a helpful coding assistant.",
+  "userPrompt": "Write a function to reverse a string in TypeScript.",
+  "apiKey": "your_mimo_api_key"
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "result": "Here's a TypeScript function to reverse a string...",
+  "usage": {
+    "inputTokens": 45,
+    "outputTokens": 120,
+    "totalTokens": 165
+  }
+}
+```
+
+**Error Response:**
+```json
+{
+  "success": false,
+  "error": "Invalid API key"
+}
+```
+
+---
+
+## 📁 Project Structure
+
+```
+prompt-forge/
+├── app/
+│   ├── page.tsx                    # Homepage — hero + features
+│   ├── editor/
+│   │   └── page.tsx                # Split-view prompt editor
+│   ├── library/
+│   │   └── page.tsx                # Template library (8 categories)
+│   ├── analytics/
+│   │   └── page.tsx                # Token analytics + charts
+│   ├── api/
+│   │   └── run-prompt/
+│   │       └── route.ts            # MiMo API proxy endpoint
+│   ├── layout.tsx                  # Root layout + navigation
+│   └── globals.css                 # Tailwind + custom theme
+├── components/
+│   ├── Navigation.tsx              # Top nav bar
+│   ├── SettingsModal.tsx           # API key + token stats modal
+│   └── ...                         # Shared UI components
+├── lib/
+│   └── ...                         # Utility functions
+├── public/                         # Static assets
+├── README.md                       # This file
+├── package.json                    # Dependencies
+├── tsconfig.json                   # TypeScript config
+└── tailwind.config.ts              # Tailwind configuration
+```
+
+---
+
+## ⚙️ Configuration
+
+### Environment Variables
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `MIMO_API_KEY` | No | MiMo API key for prompt execution. If not set, app works in offline mode with template browsing only. |
+
+### Client-Side Settings
+
+The application stores the following in browser localStorage:
+- `prompt-forge-api-key` — User's MiMo API key
+- `prompt-forge-analytics` — Execution history and token usage data
+- `prompt-forge-drafts` — Auto-saved prompt drafts
+
+Clear all data via Settings Modal → Reset.
+
+---
+
+## 📸 Screenshots
+
+| Homepage | Editor | Template Library |
+|----------|--------|------------------|
+| ![Homepage](https://github.com/farhezam/prompt-forge/blob/main/screenshots/homepage.png) | ![Editor](https://github.com/farhezam/prompt-forge/blob/main/screenshots/editor.png) | ![Library](https://github.com/farhezam/prompt-forge/blob/main/screenshots/library.png) |
+
+| Analytics | Settings Modal |
+|-----------|----------------|
+| ![Analytics](https://github.com/farhezam/prompt-forge/blob/main/screenshots/analytics.png) | ![Settings](https://github.com/farhezam/prompt-forge/blob/main/screenshots/settings.png) |
+
+---
+
+## 🗺️ Roadmap
+
+- [ ] Prompt versioning with diff comparison
+- [ ] Export prompts as JSON, Markdown, or raw text
+- [ ] Keyboard shortcuts for editor actions
+- [ ] Multi-model support (OpenAI, Anthropic, etc.)
+- [ ] Collaborative prompt editing
+- [ ] Prompt performance scoring
+- [ ] Custom template creation UI
+- [ ] Dark/light theme toggle
+- [ ] Prompt execution history search
+- [ ] API key validation on settings save
+
+---
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+---
+
+## 📄 License
+
+MIT License — see [LICENSE](LICENSE) for details.
+
+---
+
+<div align="center">
+
+**Built with ❤️ using Next.js, TypeScript, and MiMo API**
+
+</div>

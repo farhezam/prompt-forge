@@ -76,7 +76,7 @@ Comprehensive tracking with:
 
 ### 🔐 Secure API Integration
 - API key stored in browser localStorage — never transmitted to third parties
-- MiMo API calls routed through Next.js server-side API routes
+- LLM API calls routed through Next.js server-side API routes
 - Server-side proxy pattern ensures zero key exposure to client
 - Request/response logging for debugging
 
@@ -111,7 +111,7 @@ Professional dark interface with:
 │  │  /api/run-prompt                                      │   │
 │  │  - Extracts prompt from request body                   │   │
 │  │  - Adds API key from request body                      │   │
-│  │  - Forwards to MiMo API                                │   │
+│  │  - Forwards to LLM API                                  │   │
 │  │  - Extracts token usage from response                  │   │
 │  │  - Returns result + metrics to client                  │   │
 │  └──────────────────────────────────────────────────────┘   │
@@ -119,8 +119,8 @@ Professional dark interface with:
                              │ HTTPS
                              ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                        MiMo API                             │
-│  - LLM inference endpoint                                   │
+│                        LLM API                              │
+│  - OpenAI-compatible inference endpoint                     │
 │  - Returns generated text + token usage                     │
 │  - Supports multiple model variants                         │
 └─────────────────────────────────────────────────────────────┘
@@ -129,7 +129,7 @@ Professional dark interface with:
 **Data Flow:**
 1. User writes prompt in editor → saves to localStorage (auto-save)
 2. User clicks Execute → POST to `/api/run-prompt` with prompt + API key
-3. API route adds key, forwards to MiMo → receives response + token metrics
+3. API route adds key, forwards to LLM → receives response + token metrics
 4. Client displays response + updates analytics in localStorage
 5. Analytics page reads localStorage → renders charts and history
 
@@ -143,7 +143,7 @@ Professional dark interface with:
 | **React** | UI components and state management | 19.x |
 | **TypeScript** | End-to-end type safety | 5.x |
 | **Tailwind CSS** | Utility-first styling with dark theme | 4.x |
-| **MiMo API** | LLM backend for prompt execution | v1 |
+| **LLM API** | OpenAI-compatible backend for prompt execution | v1 |
 | **Vercel** | Deployment and hosting | — |
 
 ---
@@ -154,7 +154,7 @@ Professional dark interface with:
 
 - **Node.js** 18.17 or later
 - **npm** 9 or later
-- **MiMo API key** (optional — app works without it for template browsing)
+- **LLM API key** (optional — app works without it for template browsing)
 
 ### Installation
 
@@ -169,8 +169,8 @@ npm install
 # Setup environment
 cp .env.local.example .env.local
 
-# Edit .env.local with your MiMo API key
-# MIMO_API_KEY=your_api_key_here
+# Edit .env.local with your LLM API key
+# OPENAI_API_KEY=your_api_key_here
 
 # Start development server
 npm run dev
@@ -195,7 +195,7 @@ npm i -g vercel
 vercel --prod
 ```
 
-Set environment variable `MIMO_API_KEY` in Vercel dashboard under **Settings → Environment Variables**.
+Set environment variable `OPENAI_API_KEY` in Vercel dashboard under **Settings → Environment Variables**.
 
 ---
 
@@ -203,14 +203,14 @@ Set environment variable `MIMO_API_KEY` in Vercel dashboard under **Settings →
 
 ### `POST /api/run-prompt`
 
-Execute a prompt against MiMo API.
+Execute a prompt against LLM API.
 
 **Request Body:**
 ```json
 {
   "systemPrompt": "You are a helpful coding assistant.",
   "userPrompt": "Write a function to reverse a string in TypeScript.",
-  "apiKey": "your_mimo_api_key"
+  "apiKey": "your_llm_api_key"
 }
 ```
 
@@ -251,7 +251,7 @@ prompt-forge/
 │   │   └── page.tsx                # Token analytics + charts
 │   ├── api/
 │   │   └── run-prompt/
-│   │       └── route.ts            # MiMo API proxy endpoint
+│   │       └── route.ts            # LLM API proxy endpoint
 │   ├── layout.tsx                  # Root layout + navigation
 │   └── globals.css                 # Tailwind + custom theme
 ├── components/
@@ -275,12 +275,12 @@ prompt-forge/
 
 | Variable | Required | Description |
 |----------|----------|-------------|
-| `MIMO_API_KEY` | No | MiMo API key for prompt execution. If not set, app works in offline mode with template browsing only. |
+| `OPENAI_API_KEY` | No | LLM API key for prompt execution. If not set, app works in offline mode with template browsing only. |
 
 ### Client-Side Settings
 
 The application stores the following in browser localStorage:
-- `prompt-forge-api-key` — User's MiMo API key
+- `prompt-forge-api-key` — User's LLM API key
 - `prompt-forge-analytics` — Execution history and token usage data
 - `prompt-forge-drafts` — Auto-saved prompt drafts
 
@@ -323,6 +323,6 @@ MIT License — see [LICENSE](LICENSE) for details.
 
 <div align="center">
 
-**Built with ❤️ using Next.js, TypeScript, and MiMo API**
+**Built with ❤️ using Next.js, TypeScript, and Tailwind CSS**
 
 </div>

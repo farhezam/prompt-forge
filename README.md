@@ -170,7 +170,7 @@ npm install
 cp .env.local.example .env.local
 
 # Edit .env.local with your LLM API key
-# OPENAI_API_KEY=your_api_key_here
+# MIMO_API_KEY=your_mimo_api_key_here
 
 # Start development server
 npm run dev
@@ -195,7 +195,7 @@ npm i -g vercel
 vercel --prod
 ```
 
-Set environment variable `OPENAI_API_KEY` in Vercel dashboard under **Settings → Environment Variables**.
+Set environment variable `MIMO_API_KEY` in Vercel dashboard under **Settings → Environment Variables**.
 
 ---
 
@@ -275,7 +275,7 @@ prompt-forge/
 
 | Variable | Required | Description |
 |----------|----------|-------------|
-| `OPENAI_API_KEY` | No | LLM API key for prompt execution. If not set, app works in offline mode with template browsing only. |
+| `MIMO_API_KEY` | No | Xiaomi MiMo API key for prompt execution. If not set, app works in offline mode. |
 
 ### Client-Side Settings
 

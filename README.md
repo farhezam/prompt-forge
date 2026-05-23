@@ -27,7 +27,7 @@ Craft, test, and optimize LLM prompts through a VS Code-inspired interface with 
 - [API Reference](#api-reference)
 - [Project Structure](#project-structure)
 - [Configuration](#configuration)
-- [Screenshots](#screenshots)
+
 - [Roadmap](#roadmap)
 - [Contributing](#contributing)
 - [License](#license)
@@ -288,17 +288,7 @@ Clear all data via Settings Modal → Reset.
 
 ---
 
-## 📸 Screenshots
 
-| Homepage | Editor | Template Library |
-|----------|--------|------------------|
-| ![Homepage](https://github.com/farhezam/prompt-forge/blob/main/screenshots/homepage.png) | ![Editor](https://github.com/farhezam/prompt-forge/blob/main/screenshots/editor.png) | ![Library](https://github.com/farhezam/prompt-forge/blob/main/screenshots/library.png) |
-
-| Analytics | Settings Modal |
-|-----------|----------------|
-| ![Analytics](https://github.com/farhezam/prompt-forge/blob/main/screenshots/analytics.png) | ![Settings](https://github.com/farhezam/prompt-forge/blob/main/screenshots/settings.png) |
-
----
 
 ## 🗺️ Roadmap
 
